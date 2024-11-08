@@ -2,6 +2,10 @@ import { IUser } from "../interfaces/user.interface";
 import { User } from "../models/user.models";
 
 class UserRepository {
+  public async getByEmail(email: string): Promise<IUser | undefined> {
+    return await User.findOne({ email });
+  }
+
   public async getList(): Promise<IUser[]> {
     return await User.find();
   }

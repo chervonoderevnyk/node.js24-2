@@ -13,15 +13,16 @@ class UserController {
     }
   }
 
-  public async create(req: Request, res: Response, next: NextFunction) {
-    try {
-      const dto: IUser = req.body;
-      const result = await userService.create(dto);
-      res.status(201).json(result);
-    } catch (e) {
-      next(e);
-    }
-  }
+  // public async create(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     const dto: IUser = req.body;
+  //     const result = await userService.create(dto);
+  //     res.status(201).json(result);
+  //   } catch (e) {
+  //     next(e);
+  //   }
+  // }
+
   public async update(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
