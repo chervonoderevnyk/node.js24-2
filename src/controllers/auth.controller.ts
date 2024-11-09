@@ -13,6 +13,16 @@ class AuthController {
       next(e);
     }
   }
+
+  public async singIn(req: Request, res: Response, next: NextFunction) {
+    try {
+      const dto: IUser = req.body as any;
+      const result = await authService.signIn(dto);
+      res.status(201).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authController = new AuthController();

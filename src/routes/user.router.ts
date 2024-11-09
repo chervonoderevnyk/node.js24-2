@@ -1,21 +1,17 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
+import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { userValidator } from "../validators/user.validator";
 
 const router = Router();
 
 router.get("/", userController.getList);
-// router.post(
-//   "/",
-//   commonMiddleware.isBodyValid(userValidator.validateUserCreate),
-//   commonMiddleware.validateUserCreateBody,
-//   userController.create,
-// );
 
 router.put(
   "/:userId",
+  authMiddleware.checkAccessToken,
   commonMiddleware.isIdValid("userId"),
   commonMiddleware.isBodyValid(userValidator.validateUserUpdate),
   commonMiddleware.validateUserUpdateBody,

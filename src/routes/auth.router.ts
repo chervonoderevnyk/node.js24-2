@@ -12,4 +12,6 @@ router.post(
   authController.singUp,
 );
 
+router.post("/sign-in", authController.singIn);
+
 export const authRouter = router;

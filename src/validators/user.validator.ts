@@ -14,7 +14,7 @@ export class userValidator {
     .regex(regexConstant.PASSWORD_REGEX)
     .trim();
   private static age = joi.number().min(18).max(60);
-  private static phone = joi.string().regex(regexConstant.PHONE_REGEX).trim();
+  private static phone = joi.string().regex(regexConstant.PHONE_REGEX);
 
   public static validateUserCreate = joi.object({
     name: this.name.required(),

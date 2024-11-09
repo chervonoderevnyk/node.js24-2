@@ -8,11 +8,6 @@ class UserService {
     return await userRepository.getList();
   }
 
-  // public async create(dto: IUser): Promise<IUser> {
-  //   await this.isEmailExist(dto.email);
-  //   return await userRepository.create(dto);
-  // }
-
   public async update(userId: string, dto: IUser): Promise<IUser> {
     const user = await userRepository.getById(userId);
     if (!user) {
@@ -30,7 +25,6 @@ class UserService {
     if (password && password.length < 6) {
       throw new ApiError("Password must be at least 6 characters long", 400);
     }
-    // await this.isEmailExist(email);
     await authService.isEmailExist(email);
     return await userRepository.update(userId, dto);
   }
