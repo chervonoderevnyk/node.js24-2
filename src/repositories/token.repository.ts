@@ -7,8 +7,13 @@ class TokenRepository {
   public async create(dto: IToken): Promise<IToken> {
     return await Token.create(dto);
   }
+
   public async findByParams(params: FilterQuery<IToken>): Promise<IToken> {
     return await Token.findOne(params);
+  }
+
+  public async deleteByRefreshToken(refreshToken: string): Promise<void> {
+    await Token.deleteOne({ refreshToken });
   }
 }
 

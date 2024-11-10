@@ -27,6 +27,17 @@ class TokenService {
       throw new ApiError("Invalid token", 401);
     }
   }
+
+  public checkRefreshToken2(token: string): ITokenPayload {
+    try {
+      return jsonwebtoken.verify(
+        token,
+        configs.JWT_REFRESH_SECRET,
+      ) as ITokenPayload;
+    } catch (error) {
+      throw new ApiError("Invalid refresh token", 401);
+    }
+  }
 }
 
 export const tokenService = new TokenService();

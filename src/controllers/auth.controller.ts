@@ -23,6 +23,16 @@ class AuthController {
       next(e);
     }
   }
+
+  public async refreshToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const refreshToken = req.body.refreshToken;
+      const result = await authService.refreshToken(refreshToken);
+      res.status(200).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const authController = new AuthController();
