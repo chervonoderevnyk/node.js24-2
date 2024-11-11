@@ -13,7 +13,11 @@ router.post(
   authController.singUp,
 );
 
-router.post("/sign-in", authController.singIn);
+router.post(
+  "/sign-in",
+  commonMiddleware.isBodyValid(userValidator.validateLogIn),
+  authController.singIn,
+);
 
 router.post(
   "/refresh-token",

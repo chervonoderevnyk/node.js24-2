@@ -27,7 +27,9 @@ class AuthService {
     return { user, tokens };
   }
 
-  public async signIn(dto: any): Promise<{ user: IUser; tokens: ITokenPair }> {
+  public async signIn(
+    dto: IUser,
+  ): Promise<{ user: IUser; tokens: ITokenPair }> {
     const user = await userRepository.getByParams({
       email: dto.email.toLowerCase(),
     });
