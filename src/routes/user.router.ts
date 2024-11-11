@@ -17,13 +17,13 @@ router.get(
 );
 
 router.put(
-  "/:me",
+  "/me",
   authMiddleware.checkAccessToken,
   commonMiddleware.isBodyValid(userValidator.validateUserUpdate),
   commonMiddleware.validateUserUpdateBody,
   userController.updateMe,
 );
 
-router.delete("/:me", authMiddleware.checkAccessToken, userController.deleteMe);
+router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
 
 export const userRouter = router;
