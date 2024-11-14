@@ -1,10 +1,12 @@
-import { ApiError } from "../errors/appi-error";
-import { ITokenPair } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
-import { tokenRepository } from "../repositories/token.repository";
-import { userRepository } from "../repositories/user.repository";
-import { passwordService } from "./password.service";
-import { tokenService } from "./token.service";
+import {ApiError} from "../errors/appi-error.js";
+import {ITokenPair} from "../interfaces/token.interface.js";
+import {IUser} from "../interfaces/user.interface.js";
+import {tokenRepository} from "../repositories/token.repository.js";
+import {userRepository} from "../repositories/user.repository.js";
+import {emailService} from "./email.service.js";
+import {passwordService} from "./password.service.js";
+import {tokenService} from "./token.service.js";
+import {EmailTypeEnum} from "../enums/email-type.enum.js";
 
 class AuthService {
   public async signUp(
@@ -19,17 +21,18 @@ class AuthService {
     });
 
     const tokens = await tokenService.generatePair({
-      userId: user._id,
+      userId: user._id!,
       role: user.role,
     });
-    await tokenRepository.create({ ...tokens, _userId: user._id });
+    await tokenRepository.create({ ...tokens, _userId: user._id! });
 
+    await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, { name: dto.name });
     return { user, tokens };
   }
 
   public async signIn(
     dto: IUser,
-  ): Promise<{ user: IUser; tokens: ITokenPair }> {
+  ): Promise<{ user: IUser; tokens: ITokenPair }>  {
     const user = await userRepository.getByParams({
       email: dto.email.toLowerCase(),
     });
@@ -46,10 +49,10 @@ class AuthService {
     }
 
     const tokens = await tokenService.generatePair({
-      userId: user._id,
+      userId: user._id!,
       role: user.role,
     });
-    await tokenRepository.create({ ...tokens, _userId: user._id });
+    await tokenRepository.create({ ...tokens, _userId: user._id! });
 
     return { user, tokens };
   }
@@ -69,12 +72,12 @@ class AuthService {
 
     // Крок 4: Генеруємо нові токени
     const newTokens = await tokenService.generatePair({
-      userId: user._id,
+      userId: user._id!,
       role: user.role,
     });
 
     // Крок 5: Зберігаємо нові токени в базі даних
-    await tokenRepository.create({ ...newTokens, _userId: user._id });
+    await tokenRepository.create({ ...newTokens, _userId: user._id! });
 
     return newTokens;
   }

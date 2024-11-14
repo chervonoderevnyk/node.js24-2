@@ -1,8 +1,8 @@
-import { IUser } from "../interfaces/user.interface";
-import { User } from "../models/user.models";
+import { IUser } from "../interfaces/user.interface.js";
+import { User } from "../models/user.models.js";
 
 class UserRepository {
-  public async getByParams(params: Partial<IUser>): Promise<IUser> {
+  public async getByParams(params: Partial<IUser>): Promise<IUser | null> {
     return await User.findOne(params);
   }
 
@@ -14,11 +14,11 @@ class UserRepository {
     return await User.create(dto);
   }
 
-  public async update(userId: string, dto: IUser): Promise<IUser> {
+  public async update(userId: string, dto: IUser): Promise<IUser | null> {
     return await User.findByIdAndUpdate(userId, dto, { new: true });
   }
 
-  public async getById(userId: string): Promise<IUser> {
+  public async getById(userId: string): Promise<IUser | null> {
     return await User.findById(userId);
   }
 

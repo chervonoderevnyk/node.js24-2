@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Template</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; margin: 0; padding: 20px; }
+    .container { width: 100%; max-width: 600px; margin: auto; background-color: #f9f9f9; padding: 20px; }
+    .header, .footer { background-color: #333; color: #fff; text-align: center; padding: 10px; }
+    .content { padding: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    {{> header}}
+
+    <div class="content">
+      {{{body}}}
+    </div>
+
+    {{> footer}}
+  </div>
+</body>
+</html>

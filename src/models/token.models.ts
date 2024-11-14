@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import { IToken } from "../interfaces/token.interface";
-import { User } from "./user.models";
+import { IToken } from "../interfaces/token.interface.js";
+import { User } from "./user.models.js";
 
 const { Schema } = mongoose;
 

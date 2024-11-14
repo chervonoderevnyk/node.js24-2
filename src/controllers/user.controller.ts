@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-import { IUser } from "../interfaces/user.interface";
-import { userService } from "../services/user.service";
+import { IUser } from "../interfaces/user.interface.js";
+import { userService } from "../services/user.service.js";
 
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
@@ -33,7 +33,7 @@ class UserController {
     next: NextFunction,
   ) {
     try {
-      const userId = req.res.locals.JwtPayload.userId as string;
+      const userId = res.locals.JwtPayload.userId as string;
       const result = await userService.getMe(userId);
       res.json(result);
     } catch (e) {
@@ -43,7 +43,7 @@ class UserController {
 
   public async updateMe(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = req.res.locals.JwtPayload.userId as string;
+      const userId = res.locals.JwtPayload.userId as string;
       const dto: IUser = req.body;
       const result = await userService.updateMe(userId, dto);
       res.json(result);
@@ -58,7 +58,7 @@ class UserController {
     next: NextFunction,
   ) {
     try {
-      const userId = req.res.locals.JwtPayload.userId as string;
+      const userId = res.locals.JwtPayload.userId as string;
       await userService.deleteMe(userId);
       res.status(204).send();
     } catch (e) {

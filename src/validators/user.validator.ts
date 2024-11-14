@@ -1,15 +1,18 @@
 import joi from "joi";
 
-import { regexConstant } from "../constanrs/regex.constant";
-import { RoleEnum } from "../enums/role.enum";
+import {regexConstant} from "../constanrs/regex.constant.js";
+import {RoleEnum} from "../enums/role.enum.js";
+
+
 
 export class userValidator {
-  private static name = joi.string().min(3).trim();
+  private static userName = joi.string().min(3).trim().required();
   private static email = joi
     .string()
     .lowercase()
     .regex(regexConstant.EMAIL_REGEX)
     .trim();
+
   private static password = joi
     .string()
     .regex(regexConstant.PASSWORD_REGEX)
@@ -18,7 +21,7 @@ export class userValidator {
   private static phone = joi.string().regex(regexConstant.PHONE_REGEX).trim();
 
   public static validateUserCreate = joi.object({
-    name: this.name.required(),
+    name: this.userName.required(),
     email: this.email.required(),
     password: this.password.required(),
     age: this.age.required(),

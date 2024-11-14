@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
-import { IUser } from "../interfaces/user.interface";
-import { authService } from "../services/auth.service";
+import { IUser } from "../interfaces/user.interface.js";
+import { authService } from "../services/auth.service.js";
 
 class AuthController {
   public async singUp(req: Request, res: Response, next: NextFunction) {

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { ApiError } from "../errors/appi-error";
-import { tokenRepository } from "../repositories/token.repository";
-import { tokenService } from "../services/token.service";
+import { ApiError } from "../errors/appi-error.js";
+import { tokenRepository } from "../repositories/token.repository.js";
+import { tokenService } from "../services/token.service.js";
 
 class AuthMiddleware {
   public async checkAccessToken(
@@ -22,7 +22,7 @@ class AuthMiddleware {
       if (!pair) {
         throw new ApiError("Invalid access token", 401);
       }
-      req.res.locals.JwtPayload = payload;
+      res.locals.JwtPayload = payload;
       next();
     } catch (e) {
       next(e);
@@ -46,7 +46,7 @@ class AuthMiddleware {
       if (!pair) {
         throw new ApiError("Invalid refresh token", 401);
       }
-      req.res.locals.JwtPayload = payload;
+      res.locals.JwtPayload = payload;
       next();
     } catch (e) {
       next(e);

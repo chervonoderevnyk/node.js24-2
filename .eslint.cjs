@@ -12,10 +12,10 @@ module.exports = {
     root: true,
     parser: "@typescript-eslint/parser",
     parserOptions: {
-        ecmaVersion: "latest",
         project: "./tsconfig.json",
         tsconfigRootDir: __dirname,
     },
+
     plugins: ["@typescript-eslint/eslint-plugin", "simple-import-sort", "import"],
     rules: {
         indent: ["error", 2, { "SwitchCase": 1 }],
