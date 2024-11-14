@@ -1,9 +1,7 @@
 import joi from "joi";
 
-import {regexConstant} from "../constanrs/regex.constant.js";
-import {RoleEnum} from "../enums/role.enum.js";
-
-
+import { regexConstant } from "../constanrs/regex.constant.js";
+import { RoleEnum } from "../enums/role.enum.js";
 
 export class userValidator {
   private static userName = joi.string().min(3).trim().required();

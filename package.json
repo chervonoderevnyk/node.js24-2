@@ -7,7 +7,7 @@
     "start:dev": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
     "watch:server": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm src/main.ts",
     "start:prod": "node ./dist/main.js",
-    "lint": "eslint \"{src,app,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix"
   },
   "keywords": [
     "nodejs",
@@ -38,7 +38,7 @@
     "@types/nodemailer-express-handlebars": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
     "@typescript-eslint/parser": "^8.14.0",
-    "eslint": "^9.13.0",
+    "eslint": "^9.14.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",

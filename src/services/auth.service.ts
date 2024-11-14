@@ -1,12 +1,12 @@
-import {ApiError} from "../errors/appi-error.js";
-import {ITokenPair} from "../interfaces/token.interface.js";
-import {IUser} from "../interfaces/user.interface.js";
-import {tokenRepository} from "../repositories/token.repository.js";
-import {userRepository} from "../repositories/user.repository.js";
-import {emailService} from "./email.service.js";
-import {passwordService} from "./password.service.js";
-import {tokenService} from "./token.service.js";
-import {EmailTypeEnum} from "../enums/email-type.enum.js";
+import { EmailTypeEnum } from "../enums/email-type.enum.js";
+import { ApiError } from "../errors/appi-error.js";
+import { ITokenPair } from "../interfaces/token.interface.js";
+import { ILogin, IUser } from "../interfaces/user.interface.js";
+import { tokenRepository } from "../repositories/token.repository.js";
+import { userRepository } from "../repositories/user.repository.js";
+import { emailService } from "./email.service.js";
+import { passwordService } from "./password.service.js";
+import { tokenService } from "./token.service.js";
 
 class AuthService {
   public async signUp(
@@ -26,13 +26,15 @@ class AuthService {
     });
     await tokenRepository.create({ ...tokens, _userId: user._id! });
 
-    await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, { name: dto.name });
+    await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
+      name: dto.name,
+    });
     return { user, tokens };
   }
 
   public async signIn(
-    dto: IUser,
-  ): Promise<{ user: IUser; tokens: ITokenPair }>  {
+    dto: ILogin,
+  ): Promise<{ user: IUser; tokens: ITokenPair }> {
     const user = await userRepository.getByParams({
       email: dto.email.toLowerCase(),
     });

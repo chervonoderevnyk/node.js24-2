@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { IUser } from "../interfaces/user.interface.js";
+import { ILogin, IUser } from "../interfaces/user.interface.js";
 import { authService } from "../services/auth.service.js";
 
 class AuthController {
@@ -16,7 +16,7 @@ class AuthController {
 
   public async singIn(req: Request, res: Response, next: NextFunction) {
     try {
-      const dto: IUser = req.body;
+      const dto = req.body as ILogin;
       const result = await authService.signIn(dto);
       res.status(201).json(result);
     } catch (e) {

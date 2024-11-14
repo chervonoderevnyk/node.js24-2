@@ -8,7 +8,9 @@ class TokenRepository {
     return await Token.create(dto);
   }
 
-  public async findByParams(params: FilterQuery<IToken>): Promise<IToken | null> {
+  public async findByParams(
+    params: FilterQuery<IToken>,
+  ): Promise<IToken | null> {
     return await Token.findOne(params);
   }
 

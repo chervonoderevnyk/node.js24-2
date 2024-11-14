@@ -1,12 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import Joi from "joi";
-const { ValidationError } = Joi;
-
-import {ObjectSchema} from "joi";
+import Joi, { ObjectSchema } from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors/appi-error.js";
 import { IUserUpdate } from "../interfaces/user.interface.js";
+
+const { ValidationError } = Joi;
 
 class CommonMiddleware {
   public isIdValid(paramName: string) {
@@ -47,14 +46,14 @@ class CommonMiddleware {
         req.body = await validator.validateAsync(req.body);
         next();
       } catch (e) {
-      if (e instanceof ValidationError) {
-        next(new ApiError(e.details[0].message, 400));
-      } else {
-        next(e); // Для інших помилок передаємо далі без змін
+        if (e instanceof ValidationError) {
+          next(new ApiError(e.details[0].message, 400));
+        } else {
+          next(e); // Для інших помилок передаємо далі без змін
+        }
       }
-    }
-  };
-  }}
-
+    };
+  }
+}
 
 export const commonMiddleware = new CommonMiddleware();
