@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import { userController } from "../controllers/user.controller";
-import { authMiddleware } from "../middlewares/auth.middleware";
-import { commonMiddleware } from "../middlewares/common.middleware";
-import { userValidator } from "../validators/user.validator";
+import { userController } from "../controllers/user.controller.js";
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { commonMiddleware } from "../middlewares/common.middleware.js";
+import { userValidator } from "../validators/user.validator.js";
 
 const router = Router();
 
@@ -17,13 +17,13 @@ router.get(
 );
 
 router.put(
-  "/:me",
+  "/me",
   authMiddleware.checkAccessToken,
   commonMiddleware.isBodyValid(userValidator.validateUserUpdate),
   commonMiddleware.validateUserUpdateBody,
   userController.updateMe,
 );
 
-router.delete("/:me", authMiddleware.checkAccessToken, userController.deleteMe);
+router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
 
 export const userRouter = router;

@@ -1,5 +1,5 @@
-import { RoleEnum } from "../enums/role.enum";
-import { IUser } from "./user.interface";
+import { RoleEnum } from "../enums/role.enum.js";
+import { IUser } from "./user.interface.js";
 
 export interface IToken {
   _id?: string;

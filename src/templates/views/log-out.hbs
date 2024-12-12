@@ -1,0 +1,41 @@
+<div style="
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #ffe6e6, #ffcccc);
+    padding: 20px;
+    border: 2px solid #ff9999;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    margin: auto;
+">
+    <h3 style="
+        color: #d32f2f;
+        margin-bottom: 10px;
+        font-size: 1.8em;
+    ">
+        Goodbye, {{name}}!
+    </h3>
+    <p style="
+        font-size: 1.2em;
+        line-height: 1.5;
+        color: #555;
+    ">
+        You’ve been logged out successfully. We’re sorry to see you go, but hope to welcome you back soon!
+    </p>
+    <a href="{{frontUrl}}/login" style="
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #d32f2f;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-radius: 5px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#b71c1c'" onmouseout="this.style.backgroundColor='#d32f2f'">
+        Log Back In
+    </a>
+</div>

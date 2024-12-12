@@ -1,4 +1,4 @@
-import { RoleEnum } from "../enums/role.enum";
+import { RoleEnum } from "../enums/role.enum.js";
 
 export interface IUser {
   _id?: string;
@@ -24,3 +24,5 @@ export interface IUserUpdate {
   updatedAt?: Date;
   createdAt?: Date;
 }
+
+export interface ILogin extends Pick<IUser, "email" | "password"> {}

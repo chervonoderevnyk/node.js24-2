@@ -1,15 +1,25 @@
-import { ApiError } from "../errors/appi-error";
-import { ITokenPair } from "../interfaces/token.interface";
-import { IUser } from "../interfaces/user.interface";
-import { tokenRepository } from "../repositories/token.repository";
-import { userRepository } from "../repositories/user.repository";
-import { passwordService } from "./password.service";
-import { tokenService } from "./token.service";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum.js";
+import { EmailTypeEnum } from "../enums/email-type.enum.js";
+import { ApiError } from "../errors/appi-error.js";
+import {
+  IActivateToken,
+  IForgotResetPassword,
+  IForgotSetEmail,
+} from "../interfaces/action.token.interface.js";
+import { ITokenPair, ITokenPayload } from "../interfaces/token.interface.js";
+import { ILogin, IUser } from "../interfaces/user.interface.js";
+import { actionTokenRepository } from "../repositories/action.token.repository.js";
+import { tokenRepository } from "../repositories/token.repository.js";
+import { userRepository } from "../repositories/user.repository.js";
+import { emailUtil } from "../utiles/email.util.js";
+import { tokenUtil } from "../utiles/token.util.js";
+import { passwordService } from "./password.service.js";
+import { tokenService } from "./token.service.js";
 
 class AuthService {
   public async signUp(
     dto: IUser,
-  ): Promise<{ user: IUser; tokens: ITokenPair }> {
+  ): Promise<{ user: IUser; tokens: ITokenPair; actionToken: IActivateToken }> {
     await this.isEmailExist(dto.email);
     const password = await passwordService.hashPassword(dto.password);
     const user = await userRepository.create({
@@ -18,17 +28,36 @@ class AuthService {
       email: dto.email.toLowerCase(),
     });
 
-    const tokens = await tokenService.generatePair({
-      userId: user._id,
-      role: user.role,
-    });
-    await tokenRepository.create({ ...tokens, _userId: user._id });
+    const tokens = await tokenUtil.generateAndSaveTokens(
+      { userId: user._id!, role: user.role },
+      tokenRepository,
+    );
 
-    return { user, tokens };
+    const actionToken = await tokenUtil.generateAndSaveActionToken(
+      { userId: user._id!, role: user.role },
+      ActionTokenTypeEnum.VERIFY_EMAIL,
+    );
+
+    await emailUtil.sendEmailWithToken(
+      EmailTypeEnum.WELCOME,
+      dto.email,
+      dto.name ?? "Dear",
+      actionToken.token,
+      { frontUrl: process.env.FRONT_URL! },
+    );
+
+    return {
+      user,
+      tokens,
+      actionToken: {
+        ...actionToken,
+        actionVerifyEmail: "Some value",
+      },
+    };
   }
 
   public async signIn(
-    dto: IUser,
+    dto: ILogin,
   ): Promise<{ user: IUser; tokens: ITokenPair }> {
     const user = await userRepository.getByParams({
       email: dto.email.toLowerCase(),
@@ -45,38 +74,33 @@ class AuthService {
       throw new ApiError("Invalid credentials", 401);
     }
 
-    const tokens = await tokenService.generatePair({
-      userId: user._id,
-      role: user.role,
-    });
-    await tokenRepository.create({ ...tokens, _userId: user._id });
+    const tokens = await tokenUtil.generateAndSaveTokens(
+      { userId: user._id!, role: user.role },
+      tokenRepository,
+    );
 
     return { user, tokens };
   }
 
   public async refreshToken(refreshToken: string): Promise<ITokenPair> {
-    // Крок 1: Перевіряємо, чи є токен дійсним
+    // Перевіряємо, чи є токен дійсним
     const payload = tokenService.checkRefreshToken2(refreshToken);
 
-    // Крок 2: Перевіряємо, чи існує користувач
+    // Перевіряємо, чи існує користувач
     const user = await userRepository.getByParams({ _id: payload.userId });
     if (!user) {
       throw new ApiError("Користувача не знайдено", 404);
     }
 
-    // Крок 3: Видаляємо старий рефреш-токен
-    await tokenRepository.deleteByRefreshToken(refreshToken);
+    // Видаляємо старий рефреш-токен
+    await tokenRepository.delete({ refreshToken });
 
-    // Крок 4: Генеруємо нові токени
-    const newTokens = await tokenService.generatePair({
-      userId: user._id,
-      role: user.role,
-    });
-
-    // Крок 5: Зберігаємо нові токени в базі даних
-    await tokenRepository.create({ ...newTokens, _userId: user._id });
-
-    return newTokens;
+    // Генеруємо нові токени
+    // Зберігаємо нові токени в базі даних
+    return await tokenUtil.generateAndSaveTokens(
+      { userId: user._id!, role: user.role },
+      tokenRepository,
+    );
   }
 
   public async isEmailExist(email: string): Promise<void> {
@@ -84,6 +108,60 @@ class AuthService {
     if (user) {
       throw new ApiError("Email already exist", 409);
     }
+  }
+
+  public async logout(tokenId: string): Promise<void> {
+    await tokenRepository.delete({ tokenId });
+  }
+
+  public async logoutAll(payload: ITokenPayload): Promise<void> {
+    if (!payload.userId) {
+      throw new ApiError("Не вдається виконати logout: userId відсутній", 400);
+    }
+    await tokenRepository.delete({ _userId: payload.userId });
+  }
+
+  public async forgotPassword(dto: IForgotSetEmail): Promise<void> {
+    const user = await userRepository.getByParams({ email: dto.email });
+    if (!user) return;
+
+    const actionToken = await tokenUtil.generateAndSaveActionToken(
+      { userId: user._id!, role: user.role },
+      ActionTokenTypeEnum.FORGOT_PASSWORD,
+    );
+    // await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, dto.email, {
+    //   name: user.name,
+    //   actionToken: actionToken.token,
+    // });
+    await emailUtil.sendEmailWithToken(
+      EmailTypeEnum.WELCOME,
+      dto.email,
+      user.name ?? "Dear",
+      actionToken.token,
+      { frontUrl: process.env.FRONT_URL! },
+    );
+  }
+
+  public async forgotPasswordSet(
+    dto: IForgotResetPassword,
+    jwtPayload: ITokenPayload,
+  ): Promise<void> {
+    const password = await passwordService.hashPassword(dto.password);
+    await userRepository.update(jwtPayload.userId, { password });
+    await actionTokenRepository.deleteTokensByParams({
+      _userId: jwtPayload.userId,
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+    });
+    await tokenRepository.delete({ _userId: jwtPayload.userId });
+  }
+
+  public async verifyEmail(jwtPayload: ITokenPayload): Promise<void> {
+    await userRepository.update(jwtPayload.userId, { isVerified: true });
+    await actionTokenRepository.deleteTokensByParams({
+      _userId: jwtPayload.userId,
+      type: ActionTokenTypeEnum.VERIFY_EMAIL,
+    });
+    await tokenRepository.delete({ _userId: jwtPayload.userId });
   }
 }
 

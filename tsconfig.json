@@ -1,15 +1,36 @@
 {
   "compilerOptions": {
-    "target": "ESNext",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-    "module": "commonjs",                                /* Specify what module code is generated. */
-     "rootDir": "./src",                                  /* Specify the root folder within your source files. */
-     "moduleResolution": "node",                     /* Specify how TypeScript looks up a file from a given module specifier. */
-     "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
-     "allowSyntheticDefaultImports": true,             /* Allow 'import x from y' when a module doesn't have a default export. */
-    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
-     "noUnusedLocals": true,                           /* Enable error reporting when local variables aren't read. */
-    "skipLibCheck": true,                               /* Skip type checking all .d.ts files. */
-    "removeComments": true,
-    "resolveJsonModule": true
-  }
+    "target": "ESNext", // Вказує на версію ECMAScript, до якої компілюється код. "ESNext" підтримує останні можливості JS.
+    "module": "NodeNext", // Використовує модульну систему для Node.js, яка підтримує ES-модулі.
+    "lib": ["dom", "es6", "esnext", "esnext.asynciterable"], // Включає бібліотеки для роботи з DOM, ES6 і асинхронними ітераторами.
+    "skipLibCheck": true, // Пропускає перевірку типів у бібліотеках, що може пришвидшити компіляцію.
+    "sourceMap": true, // Генерує карти джерел для покращення налагодження.
+    "outDir": "./dist", // Вказує директорію для збереження згенерованих файлів.
+    "moduleResolution": "NodeNext", // Визначає метод вирішення модулів, сумісний з Node.js.
+    "removeComments": true, // Видаляє всі коментарі з фінального коду.
+    "noImplicitAny": true, // Вимагає явного визначення типів для змінних, які не мають явно вказаного типу.
+    "strictNullChecks": true, // Забороняє використання `null` або `undefined` для будь-якого типу, якщо не вказано явно.
+    "strictFunctionTypes": true, // Включає сувору перевірку типів функцій для покращення безпеки типів.
+    "noImplicitThis": true, // Вимагає явного визначення типу для `this` всередині функцій.
+    "noUnusedLocals": true, // Вимагає, щоб усі оголошені локальні змінні використовувались.
+    "noUnusedParameters": false, // Не вимагає, щоб усі параметри функцій були використані (можна вимкнути для зручності).
+    "noImplicitReturns": true, // Вимагає, щоб функції явно повертали значення або не повертали нічого.
+    "noFallthroughCasesInSwitch": true, // Забороняє падіння між case у switch (без явного `break`).
+    "allowSyntheticDefaultImports": true, // Дозволяє імпортувати модулі за допомогою синтетичних за замовчуванням імпортів.
+    "esModuleInterop": true, // Дозволяє використовувати ES6 імпорти з CommonJS модулями.
+    "emitDecoratorMetadata": true, // Дозволяє генерувати метадані для декораторів (використовується в NestJS).
+    "experimentalDecorators": true, // Дозволяє використовувати експериментальні декоратори в TypeScript.
+    "resolveJsonModule": true, // Дозволяє імпортувати файли JSON як модулі.
+    "baseUrl": "." // Встановлює базовий шлях для вирішення модулів, тут встановлено корінь проекту.
+  },
+  "ts-node": {
+    "esm": true, // Вказує, що ts-node буде працювати з ES-модулями.
+  },
+  "exclude": ["node_modules", "dist"], // Вказує, що слід виключити з компіляції директорії `node_modules` і `dist`.
+  "include": [
+    "src/**/*.ts", // Включає всі TypeScript файли в директорії `src` і підкаталогах.
+    "test/**/*.ts", // Включає всі TypeScript файли в директорії `test` і підкаталогах.
+    "types/global.d.ts"
+  ],
 }
+

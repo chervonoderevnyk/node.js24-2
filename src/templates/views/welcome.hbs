@@ -1,0 +1,41 @@
+<div style="
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: #333;
+    background: linear-gradient(135deg, #f7f7f7, #eaeaea);
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    margin: auto;
+">
+    <h3 style="
+        color: #4caf50;
+        margin-bottom: 10px;
+        font-size: 1.8em;
+    ">
+        Hello, {{name}}!
+    </h3>
+    <p style="
+        font-size: 1.2em;
+        line-height: 1.5;
+        color: #555;
+    ">
+        Welcome to our platform. We’re excited to have you on board.
+    </p>
+    <a href="{{frontUrl}}/activate?token={{actionToken}}" style="
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: #fff;
+        text-decoration: none;
+        font-size: 1.2em;
+        border-radius: 5px;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease;
+    " onmouseover="this.style.backgroundColor='#45a049'" onmouseout="this.style.backgroundColor='#4caf50'">
+        VERIFY
+    </a>
+</div>
