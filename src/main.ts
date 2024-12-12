@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
 
 import { configs } from "./configs/configs.js";
+import { jobRunner } from "./crons/index.js";
 import { ApiError } from "./errors/appi-error.js";
 import { authRouter } from "./routes/auth.router.js";
 import { userRouter } from "./routes/user.router.js";
@@ -35,6 +36,7 @@ app.listen(configs.APP_PORT, host, async () => {
   try {
     await mongoose.connect(mongoUrl);
     console.log(`Server is running on port ${configs.APP_PORT}`);
+    jobRunner();
   } catch (error) {
     console.error("Failed to connect to MongoDB:", error);
   }

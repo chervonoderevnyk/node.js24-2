@@ -6,7 +6,7 @@ import nodemailerHbs from "nodemailer-express-handlebars";
 import { configs } from "../configs/configs.js";
 import { emailConstant } from "../constanrs/email.constant.js";
 import { EmailTypeEnum } from "../enums/email-type.enum.js";
-import {EmailTypeToPayloadType} from "../types/email-type -to-payload.type.js";
+import { EmailTypeToPayloadType } from "../types/email-type-to-payload.type.js";
 
 class EmailService {
   private transporter: Transporter;
@@ -56,7 +56,10 @@ class EmailService {
       to,
       subject,
       template,
-      context,
+      context: {
+        ...context,
+        frontUrl: configs.FRONTEND_URL,
+      },
     };
 
     await this.transporter.sendMail(mailOptions);

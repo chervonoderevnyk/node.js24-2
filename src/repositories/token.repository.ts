@@ -14,9 +14,21 @@ class TokenRepository {
     return await Token.findOne(params);
   }
 
-  public async deleteByRefreshToken(refreshToken: string): Promise<void> {
-    await Token.deleteOne({ refreshToken });
+  public async delete(params: FilterQuery<IToken>): Promise<void> {
+    await Token.deleteMany(params);
   }
 }
 
 export const tokenRepository = new TokenRepository();
+
+// public async deleteByRefreshToken(refreshToken: string): Promise<void> {
+//   await Token.deleteOne({ refreshToken });
+// }
+//
+// public async deleteByParams(params: FilterQuery<IToken>): Promise<void> {
+//   await Token.deleteMany(params);
+// }
+//
+// public async deleteById(id: string): Promise<void> {
+//   await Token.deleteOne({ _id: id });
+// }

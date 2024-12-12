@@ -27,5 +27,3 @@ router.put(
 router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
 
 export const userRouter = router;
-
-// crvv zkax hnnx fgwh

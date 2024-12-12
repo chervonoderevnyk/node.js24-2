@@ -20,7 +20,7 @@ class TokenService {
         expiresIn: configs.JWT_REFRESH_EXPIRES_IN,
       },
     );
-
+    console.log("Generated Tokens with Payload:", payload);
     return { accessToken, refreshToken };
   }
 
@@ -38,12 +38,15 @@ class TokenService {
 
   public checkRefreshToken2(token: string): ITokenPayload {
     try {
-      return jsonwebtoken.verify(
+      const payload = jsonwebtoken.verify(
         token,
         configs.JWT_REFRESH_SECRET as string,
       ) as ITokenPayload;
+
+      console.log("Refresh Token Payload:", payload); // Логування для перевірки
+      return payload;
     } catch (error) {
-      console.error("Refresh token verification error:", error);
+      console.error("Refresh token verification error:", error.message);
       throw new ApiError("Invalid refresh token", 401);
     }
   }

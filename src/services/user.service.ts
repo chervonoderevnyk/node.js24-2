@@ -4,8 +4,8 @@ import { userRepository } from "../repositories/user.repository.js";
 import { authService } from "./auth.service.js";
 
 class UserService {
-  public async getList(): Promise<IUser[]> {
-    return await userRepository.getList();
+  public async getList(query: any): Promise<IUser[]> {
+    return await userRepository.getList(query);
   }
 
   public async updateMe(userId: string, dto: IUser): Promise<IUser> {

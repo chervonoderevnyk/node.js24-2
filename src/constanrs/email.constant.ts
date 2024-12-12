@@ -9,4 +9,12 @@ export const emailConstant = {
     subject: "Password reset instructions",
     template: "forgot-password",
   },
+  [EmailTypeEnum.DELETE_ACCOUNT]: {
+    subject: "Delete Account!!!",
+    template: "delete-account!",
+  },
+  [EmailTypeEnum.LOG_OUT]: {
+    subject: "logout",
+    template: "logout",
+  },
 };

@@ -6,7 +6,8 @@ import { userService } from "../services/user.service.js";
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await userService.getList();
+      const query = req.query;
+      const result = await userService.getList(query);
       res.json(result);
     } catch (e) {
       next(e);
@@ -33,7 +34,7 @@ class UserController {
     next: NextFunction,
   ) {
     try {
-      const userId = res.locals.JwtPayload.userId as string;
+      const userId = res.locals.jwtPayload.userId as string;
       const result = await userService.getMe(userId);
       res.json(result);
     } catch (e) {
@@ -43,7 +44,7 @@ class UserController {
 
   public async updateMe(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = res.locals.JwtPayload.userId as string;
+      const userId = res.locals.jwtPayload.userId as string;
       const dto: IUser = req.body;
       const result = await userService.updateMe(userId, dto);
       res.json(result);
@@ -58,7 +59,7 @@ class UserController {
     next: NextFunction,
   ) {
     try {
-      const userId = res.locals.JwtPayload.userId as string;
+      const userId = res.locals.jwtPayload.userId as string;
       await userService.deleteMe(userId);
       res.status(204).send();
     } catch (e) {

@@ -6,16 +6,21 @@ class UserRepository {
     return await User.findOne(params);
   }
 
-  public async getList(): Promise<IUser[]> {
-    return await User.find();
+  public async getList(query: any): Promise<IUser[]> {
+    return await User.find().limit(query.limit).skip(query.skip);
   }
 
   public async create(dto: IUser): Promise<IUser> {
     return await User.create(dto);
   }
 
-  public async update(userId: string, dto: IUser): Promise<IUser | null> {
-    return await User.findByIdAndUpdate(userId, dto, { new: true });
+  public async update(
+    userId: string,
+    dto: Partial<IUser>,
+  ): Promise<IUser | null> {
+    return await User.findByIdAndUpdate(userId, dto, {
+      returnDocument: "after",
+    });
   }
 
   public async getById(userId: string): Promise<IUser | null> {
@@ -24,6 +29,17 @@ class UserRepository {
 
   public async delete(userId: string): Promise<void> {
     await User.findByIdAndDelete(userId);
+  }
+
+  public async updateVerifiedUser(
+    userId: string,
+    isVerified: boolean,
+  ): Promise<IUser | null> {
+    return await User.findByIdAndUpdate(
+      userId,
+      { $set: { isVerified } },
+      { new: true },
+    );
   }
 }
 
