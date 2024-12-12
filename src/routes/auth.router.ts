@@ -61,6 +61,4 @@ router.post(
   authController.verifyEmail,
 );
 
-router.post("/change-password");
-
 export const authRouter = router;
