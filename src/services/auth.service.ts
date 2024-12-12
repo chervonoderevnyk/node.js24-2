@@ -163,6 +163,26 @@ class AuthService {
     });
     await tokenRepository.delete({ _userId: jwtPayload.userId });
   }
+
+  public async changePassword(
+    jwtPayload: ITokenPayload,
+    dto: { oldPassword: string; newPassword: string },
+  ): Promise<void> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    const isPasswordCorrect = await passwordService.comparePassword(
+      dto.oldPassword,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new ApiError("Invalid old password", 401);
+    }
+    const newPassword = await passwordService.hashPassword(dto.newPassword);
+    await userRepository.update(jwtPayload.userId, { password: newPassword });
+    await tokenRepository.delete({ _userId: jwtPayload.userId });
+  }
 }
 
 export const authService = new AuthService();
