@@ -6,8 +6,8 @@ import { emailUtil } from "../utiles/email.util.js";
 
 const checkInactiveUsers = async () => {
   try {
-    // const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);
-    const fiveDaysAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000);
+    // const fiveDaysAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
 
     // Знаходимо неактивних користувачів
     const inactiveUsers = await userRepository.getList({
@@ -34,7 +34,7 @@ const checkInactiveUsers = async () => {
 };
 
 export const checkInactiveUsersCron = new CronJob(
-  // "0 0 * * *", // Запуск щодня опівночі
-  "0 */1 * * *", // Запуск кожні 1 години
+  "0 0 * * *", // Запуск щодня опівночі
+  // "0 */1 * * *", // Запуск кожні 1 години
   checkInactiveUsers,
 );
