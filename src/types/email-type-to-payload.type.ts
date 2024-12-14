@@ -17,9 +17,12 @@ export type EmailTypeToPayloadType = {
     "name" | "actionToken"
   >;
 
-  [EmailTypeEnum.DELETE_ACCOUNT]: PickRquiredType<
-    EmailPayloadCombinedType,
-    "frontUrl"
+  // [EmailTypeEnum.DELETE_ACCOUNT]: PickRquiredType<
+  //   EmailPayloadCombinedType,
+  //   "frontUrl"
+  // >;
+  [EmailTypeEnum.DELETE_ACCOUNT]: EmailContextWithFrontUrl<
+    PickRquiredType<EmailPayloadCombinedType, "frontUrl">
   >;
 
   [EmailTypeEnum.LOG_OUT]: EmailContextWithFrontUrl<
