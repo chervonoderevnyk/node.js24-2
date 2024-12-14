@@ -11,10 +11,14 @@ export const emailConstant = {
   },
   [EmailTypeEnum.DELETE_ACCOUNT]: {
     subject: "Delete Account!!!",
-    template: "delete-account!",
+    template: "delete-account",
   },
   [EmailTypeEnum.LOG_OUT]: {
     subject: "logout",
-    template: "logout",
+    template: "log-out",
+  },
+  [EmailTypeEnum.INACTIVITY_REMINDER]: {
+    subject: "We miss you",
+    template: "reminder-after-5-days",
   },
 };

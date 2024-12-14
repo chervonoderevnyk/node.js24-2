@@ -5,6 +5,9 @@ class UserRepository {
   public async getByParams(params: Partial<IUser>): Promise<IUser | null> {
     return await User.findOne(params);
   }
+  // public async getByParams(params: any): Promise<IUser | null> {
+  //   return await User.findOne(params);
+  // }
 
   public async getList(query: any): Promise<IUser[]> {
     return await User.find().limit(query.limit).skip(query.skip);

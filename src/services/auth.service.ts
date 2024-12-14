@@ -8,6 +8,7 @@ import {
 } from "../interfaces/action.token.interface.js";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface.js";
 import { ILogin, IUser } from "../interfaces/user.interface.js";
+import { UserPassword } from "../models/password.models.js";
 import { actionTokenRepository } from "../repositories/action.token.repository.js";
 import { tokenRepository } from "../repositories/token.repository.js";
 import { userRepository } from "../repositories/user.repository.js";
@@ -74,6 +75,8 @@ class AuthService {
       throw new ApiError("Invalid credentials", 401);
     }
 
+    await userRepository.update(user._id!, { lastVisit: new Date() });
+
     const tokens = await tokenUtil.generateAndSaveTokens(
       { userId: user._id!, role: user.role },
       tokenRepository,
@@ -129,10 +132,7 @@ class AuthService {
       { userId: user._id!, role: user.role },
       ActionTokenTypeEnum.FORGOT_PASSWORD,
     );
-    // await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, dto.email, {
-    //   name: user.name,
-    //   actionToken: actionToken.token,
-    // });
+
     await emailUtil.sendEmailWithToken(
       EmailTypeEnum.WELCOME,
       dto.email,
@@ -172,6 +172,7 @@ class AuthService {
     if (!user) {
       throw new ApiError("User not found", 404);
     }
+
     const isPasswordCorrect = await passwordService.comparePassword(
       dto.oldPassword,
       user.password,
@@ -179,8 +180,34 @@ class AuthService {
     if (!isPasswordCorrect) {
       throw new ApiError("Invalid old password", 401);
     }
+
+    const passwords = await UserPassword.find({
+      userId: user._id,
+      createdAt: { $gte: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) }, // останні 90 днів
+    });
+
+    for (const record of passwords) {
+      const isSame = await passwordService.comparePassword(
+        dto.newPassword,
+        record.password,
+      );
+      if (isSame) {
+        throw new ApiError(
+          "New password must not be the same as recent passwords",
+          400,
+        );
+      }
+    }
+
     const newPassword = await passwordService.hashPassword(dto.newPassword);
+
+    // Оновлення пароля користувача
     await userRepository.update(jwtPayload.userId, { password: newPassword });
+
+    // Збереження нового пароля в історії
+    await UserPassword.create({ userId: user._id, password: newPassword });
+
+    // Видалення токенів
     await tokenRepository.delete({ _userId: jwtPayload.userId });
   }
 }
