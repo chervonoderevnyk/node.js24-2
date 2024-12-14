@@ -19,6 +19,7 @@ const userSchema = new Schema(
       default: RoleEnum.USER,
     },
     isVerified: { type: Boolean, required: true, default: false },
+    lastVisit: { type: Date, default: Date.now },
   },
   {
     timestamps: true,

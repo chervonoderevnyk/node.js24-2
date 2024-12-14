@@ -25,4 +25,8 @@ export type EmailTypeToPayloadType = {
   [EmailTypeEnum.LOG_OUT]: EmailContextWithFrontUrl<
     PickRquiredType<EmailPayloadCombinedType, "name" | "frontUrl">
   >;
+
+  [EmailTypeEnum.INACTIVITY_REMINDER]: EmailContextWithFrontUrl<
+    PickRquiredType<EmailPayloadCombinedType, "name" | "frontUrl">
+  >;
 };

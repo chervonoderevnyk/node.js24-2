@@ -11,6 +11,7 @@ export interface IUser {
   isVerified: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  lastVisit?: Date;
 }
 
 export interface IUserUpdate {
@@ -23,6 +24,7 @@ export interface IUserUpdate {
   isVerified?: boolean;
   updatedAt?: Date;
   createdAt?: Date;
+  lastVisit?: Date;
 }
 
 export interface ILogin extends Pick<IUser, "email" | "password"> {}

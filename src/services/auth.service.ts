@@ -75,6 +75,8 @@ class AuthService {
       throw new ApiError("Invalid credentials", 401);
     }
 
+    await userRepository.update(user._id!, { lastVisit: new Date() });
+
     const tokens = await tokenUtil.generateAndSaveTokens(
       { userId: user._id!, role: user.role },
       tokenRepository,
@@ -130,10 +132,7 @@ class AuthService {
       { userId: user._id!, role: user.role },
       ActionTokenTypeEnum.FORGOT_PASSWORD,
     );
-    // await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, dto.email, {
-    //   name: user.name,
-    //   actionToken: actionToken.token,
-    // });
+
     await emailUtil.sendEmailWithToken(
       EmailTypeEnum.WELCOME,
       dto.email,
@@ -164,26 +163,6 @@ class AuthService {
     });
     await tokenRepository.delete({ _userId: jwtPayload.userId });
   }
-
-  // public async changePassword(
-  //   jwtPayload: ITokenPayload,
-  //   dto: { oldPassword: string; newPassword: string },
-  // ): Promise<void> {
-  //   const user = await userRepository.getById(jwtPayload.userId);
-  //   if (!user) {
-  //     throw new ApiError("User not found", 404);
-  //   }
-  //   const isPasswordCorrect = await passwordService.comparePassword(
-  //     dto.oldPassword,
-  //     user.password,
-  //   );
-  //   if (!isPasswordCorrect) {
-  //     throw new ApiError("Invalid old password", 401);
-  //   }
-  //   const newPassword = await passwordService.hashPassword(dto.newPassword);
-  //   await userRepository.update(jwtPayload.userId, { password: newPassword });
-  //   await tokenRepository.delete({ _userId: jwtPayload.userId });
-  // }
 
   public async changePassword(
     jwtPayload: ITokenPayload,
