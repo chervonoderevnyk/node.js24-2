@@ -1,41 +1,45 @@
 <div style="
-    text-align: center;
-    font-family: Arial, sans-serif;
-    color: #fff;
-    background: linear-gradient(135deg, #ffccbc, #ffab91);
-    padding: 20px;
-    border: 2px solid #e57373;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 50%;
-    margin: auto;
+    text-align: center; /* Центруємо весь вміст */
+    font-family: Arial, sans-serif; /* Встановлюємо шрифт Arial */
+    color: #fff; /* Колір тексту - білий */
+    background: linear-gradient(135deg, #ffccbc, #ffab91); /* Градієнтний фон */
+    padding: 20px; /* Відступи всередині елемента */
+    border: 2px solid #e57373; /* Товщина та колір рамки */
+    border-radius: 10px; /* Округлення кутів */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Тінь навколо елемента */
+    width: 50%; /* Ширина контейнера */
+    margin: auto; /* Автоматичні відступи для центрування по горизонталі */
 ">
     <h3 style="
-        color: #d32f2f;
-        margin-bottom: 10px;
-        font-size: 1.8em;
+        color: #d32f2f; /* Колір заголовка - червоний */
+        margin-bottom: 10px; /* Відступ від нижньої частини заголовка */
+        font-size: 1.8em; /* Розмір шрифта заголовка */
     ">
-        Account Deleted, {{name}}!
+        Account Deleted, {{name}}! <!-- Текст, де {{name}} заміняється на ім'я користувача -->
     </h3>
     <p style="
-        font-size: 1.2em;
-        line-height: 1.5;
-        color: #fff;
+        font-size: 1.2em; /* Розмір шрифта для параграфу */
+        line-height: 1.5; /* Міжрядковий інтервал */
+        color: #fff; /* Колір тексту в параграфі - білий */
     ">
         Your account has been successfully deleted. If this was a mistake or you wish to return, contact us for assistance.
+        <!-- Опис того, що сталося з аккаунтом -->
     </p>
     <a href="{{supportLink}}" style="
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #d32f2f;
-        color: #fff;
-        text-decoration: none;
-        font-size: 1.2em;
-        border-radius: 5px;
-        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease;
-    " onmouseover="this.style.backgroundColor='#b71c1c'" onmouseout="this.style.backgroundColor='#d32f2f'">
+        display: inline-block; /* Зробити посилання елементом блоку для кращого керування */
+        margin-top: 20px; /* Відступ зверху */
+        padding: 10px 20px; /* Відступи всередині кнопки */
+        background-color: #d32f2f; /* Колір фону кнопки */
+        color: #fff; /* Колір тексту на кнопці */
+        text-decoration: none; /* Без підкреслення */
+        font-size: 1.2em; /* Розмір шрифта кнопки */
+        border-radius: 5px; /* Округлення кутів кнопки */
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Тінь на кнопці */
+        transition: background-color 0.3s ease; /* Анімація для зміни кольору фону */
+    "
+    onmouseover="this.style.backgroundColor='#b71c1c'"
+    onmouseout="this.style.backgroundColor='#d32f2f'">
         Contact Support
+        <!-- Текст кнопки, що веде до підтримки -->
     </a>
 </div>

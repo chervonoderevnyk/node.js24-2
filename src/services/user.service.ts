@@ -1,6 +1,8 @@
+import { EmailTypeEnum } from "../enums/email-type.enum.js";
 import { ApiError } from "../errors/appi-error.js";
 import { IUser } from "../interfaces/user.interface.js";
 import { userRepository } from "../repositories/user.repository.js";
+import { emailUtil } from "../utiles/email.util.js";
 import { authService } from "./auth.service.js";
 
 class UserService {
@@ -47,11 +49,28 @@ class UserService {
     return user ?? undefined;
   }
 
+  // public async deleteMe(userId: string): Promise<void> {
+  //   const user = await userRepository.getById(userId);
+  //   if (!user) {
+  //     throw new ApiError("User not found", 404);
+  //   }
+  //   await userRepository.delete(userId);
+  // }
   public async deleteMe(userId: string): Promise<void> {
     const user = await userRepository.getById(userId);
     if (!user) {
       throw new ApiError("User not found", 404);
     }
+
+    // Відправляємо email перед видаленням акаунту
+    await emailUtil.sendEmailWithToken(
+      EmailTypeEnum.DELETE_ACCOUNT, // Тип мейлу
+      user.email, // Email користувача
+      user.name, // Ім'я користувача
+      "deleteAccountToken", // actionToken, може бути будь-яким, залежно від вашої логіки
+    );
+
+    // Видаляємо користувача з бази даних
     await userRepository.delete(userId);
   }
 }
