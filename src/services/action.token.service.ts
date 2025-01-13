@@ -57,48 +57,6 @@ class ActionTokenService {
     }
   }
 
-  // public async activateToken(dto: IUser, actionToken: string): Promise<IUser> {
-  //   console.log("Token in activateToken Service:", actionToken);
-  //
-  //   // Перевіряємо валідність токена
-  //   const payload = tokenService.checkToken(actionToken);
-  //
-  //   if (!payload.userId) {
-  //     throw new ApiError("Некоректний токен: відсутній userId", 400);
-  //   }
-  //
-  //   // Перевіряємо, чи токен є у базі та чи він використаний
-  //   const tokenRecord = await actionTokenRepository.isActionTokenUsed({
-  //     actionToken,
-  //   });
-  //   if (!tokenRecord) {
-  //     throw new ApiError("Action token not found in the database", 404);
-  //   }
-  //   if (tokenRecord.used) {
-  //     throw new ApiError("Токен вже використаний", 400);
-  //   }
-  //
-  //   // Отримуємо користувача
-  //   const user = await userRepository.getById(payload.userId);
-  //   if (!user) {
-  //     throw new ApiError("Користувача не знайдено", 404);
-  //   }
-  //
-  //   // Оновлюємо статус верифікації користувача
-  //   const updatedUser = await userRepository.updateVerifiedUser(
-  //     payload.userId,
-  //     true,
-  //   );
-  //   if (!updatedUser) {
-  //     throw new ApiError("Не вдалося оновити статус користувача", 404);
-  //   }
-  //
-  //   // Оновлюємо статус токена
-  //   await actionTokenRepository.markTokenAsUsed(actionToken);
-  //
-  //   return updatedUser;
-  // }
-
   public async activateToken(actionToken: string): Promise<IUser> {
     console.log("Token in activateToken Service:", actionToken);
 
