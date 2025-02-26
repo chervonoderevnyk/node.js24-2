@@ -1,12 +1,17 @@
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import * as mongoose from "mongoose";
+import swaggerUi from "swagger-ui-express";
 
+// import swaggerDocument from "../docs/swagger.json" assert { type: "json" };
+import swaggerDocument from "../docs/swagger.json" with { type: "json" };
 import { configs } from "./configs/configs.js";
 import { jobRunner } from "./crons/index.js";
-import { ApiError } from "./errors/appi-error.js";
+import { ApiError } from "./errors/api-error.js";
 import { authRouter } from "./routes/auth.router.js";
 import { userRouter } from "./routes/user.router.js";
+
+const swaggerSpec = swaggerDocument;
 
 dotenv.config();
 
@@ -16,6 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(
   "*",

@@ -1,0 +1,5 @@
+{
+    "terminal.external.linuxExec": "google-chrome-stable",
+    "terminal.external.windowsExec": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+}
+    

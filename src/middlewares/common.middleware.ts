@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import Joi, { ObjectSchema } from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 
-import { ApiError } from "../errors/appi-error.js";
+import { ApiError } from "../errors/api-error.js";
 import { IUserUpdate } from "../interfaces/user.interface.js";
 
 const { ValidationError } = Joi;
@@ -44,6 +44,21 @@ class CommonMiddleware {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         req.body = await validator.validateAsync(req.body);
+        next();
+      } catch (e) {
+        if (e instanceof ValidationError) {
+          next(new ApiError(e.details[0].message, 400));
+        } else {
+          next(e); // Для інших помилок передаємо далі без змін
+        }
+      }
+    };
+  }
+
+  public isQueryValid(validator: ObjectSchema) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        req.query = await validator.validateAsync(req.query);
         next();
       } catch (e) {
         if (e instanceof ValidationError) {

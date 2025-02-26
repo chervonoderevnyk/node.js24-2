@@ -1,6 +1,7 @@
 import { RoleEnum } from "../enums/role.enum.js";
 
 export interface IUser {
+  avatar?: any;
   _id?: string;
   name: string;
   email: string;
@@ -28,3 +29,32 @@ export interface IUserUpdate {
 }
 
 export interface ILogin extends Pick<IUser, "email" | "password"> {}
+
+export interface IUserListQuery {
+  orderBy: string;
+  order: string;
+  limit?: number;
+  page?: number;
+  search?: string;
+}
+
+export interface IUserResponse
+  extends Pick<
+    IUser,
+    | "_id"
+    | "name"
+    | "email"
+    | "age"
+    | "phone"
+    | "avatar"
+    | "role"
+    | "isVerified"
+    | "createdAt"
+    | "updatedAt"
+    | "lastVisit"
+  > {}
+
+export interface IUserResponseList extends IUserListQuery {
+  data: IUserResponse[];
+  total: number;
+}

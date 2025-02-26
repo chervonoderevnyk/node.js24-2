@@ -4,7 +4,7 @@ import nodemailer, { Transporter } from "nodemailer";
 import nodemailerHbs from "nodemailer-express-handlebars";
 
 import { configs } from "../configs/configs.js";
-import { emailConstant } from "../constanrs/email.constant.js";
+import { emailConstant } from "../constants/email.constant.js";
 import { EmailTypeEnum } from "../enums/email-type.enum.js";
 import { EmailTypeToPayloadType } from "../types/email-type-to-payload.type.js";
 

@@ -1,16 +1,58 @@
-import { IUser } from "../interfaces/user.interface.js";
+import { FilterQuery } from "mongoose";
+
+import { IUser, IUserListQuery } from "../interfaces/user.interface.js";
 import { User } from "../models/user.models.js";
 
 class UserRepository {
   public async getByParams(params: Partial<IUser>): Promise<IUser | null> {
     return await User.findOne(params);
   }
-  // public async getByParams(params: any): Promise<IUser | null> {
-  //   return await User.findOne(params);
+
+  // public async getList(query: IUserListQuery): Promise<[IUser[], number]> {
+  //   const filterObj: FilterQuery<IUser> = { isVerified: true };
+  //   if (query.search) {
+  //     filterObj.$or = [
+  //       { name: { $regex: query.search, $options: "i" } },
+  //       { email: { $regex: query.search, $options: "i" } },
+  //     ];
+  //   }
+  //   const limit = query.limit ?? 5; // default limit value
+  //   const page = query.page ?? 1; // default page value
+  //   const skip = (page - 1) * limit;
+  //   return await Promise.all([
+  //     User.find(filterObj).skip(skip).limit(limit).sort({ createdAt: -1 }),
+  //     User.countDocuments(filterObj),
+  //   ]);
   // }
 
-  public async getList(query: any): Promise<IUser[]> {
-    return await User.find().limit(query.limit).skip(query.skip);
+  public async getList(query: IUserListQuery): Promise<[IUser[], number]> {
+    const filterObj: FilterQuery<IUser> = {}; // Видалено isVerified: true
+
+    // Пошук за іменем чи email (чутливий до регістру)
+    if (query.search) {
+      filterObj.$or = [
+        { name: { $regex: query.search, $options: "i" } },
+        { email: { $regex: query.search, $options: "i" } },
+      ];
+    }
+
+    // Обмеження та пагінація
+    const limit = query.limit ?? 5;
+    const page = query.page ?? 1;
+    const skip = (page - 1) * limit;
+
+    // Обробка сортування
+    const sortField = query.orderBy ?? "createdAt";
+    const sortOrder = query.order === "asc" ? 1 : -1;
+
+    // Запити до бази даних
+    return await Promise.all([
+      User.find(filterObj)
+        .skip(skip)
+        .limit(limit)
+        .sort({ [sortField]: sortOrder }),
+      User.countDocuments(filterObj),
+    ]);
   }
 
   public async create(dto: IUser): Promise<IUser> {

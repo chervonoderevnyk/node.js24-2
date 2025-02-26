@@ -1,13 +1,19 @@
 import { EmailTypeEnum } from "../enums/email-type.enum.js";
-import { ApiError } from "../errors/appi-error.js";
-import { IUser } from "../interfaces/user.interface.js";
+import { ApiError } from "../errors/api-error.js";
+import {
+  IUser,
+  IUserListQuery,
+  IUserResponseList,
+} from "../interfaces/user.interface.js";
+import { UserPresenter } from "../presenters/user.presenter.js";
 import { userRepository } from "../repositories/user.repository.js";
 import { emailUtil } from "../utiles/email.util.js";
 import { authService } from "./auth.service.js";
 
 class UserService {
-  public async getList(query: any): Promise<IUser[]> {
-    return await userRepository.getList(query);
+  public async getList(query: IUserListQuery): Promise<IUserResponseList> {
+    const [users, total] = await userRepository.getList(query);
+    return UserPresenter.toResponseList(users, total, query);
   }
 
   public async updateMe(userId: string, dto: IUser): Promise<IUser> {

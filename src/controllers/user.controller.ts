@@ -1,12 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 
-import { IUser } from "../interfaces/user.interface.js";
+import { IUser, IUserListQuery } from "../interfaces/user.interface.js";
 import { userService } from "../services/user.service.js";
 
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const query = req.query;
+      const query = req.query as unknown as IUserListQuery;
       const result = await userService.getList(query);
       res.json(result);
     } catch (e) {

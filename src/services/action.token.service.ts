@@ -2,7 +2,7 @@ import jsonwebtoken from "jsonwebtoken";
 
 import { configs } from "../configs/configs.js";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum.js";
-import { ApiError } from "../errors/appi-error.js";
+import { ApiError } from "../errors/api-error.js";
 import { IActivateToken } from "../interfaces/action.token.interface.js";
 import { ITokenPayload } from "../interfaces/token.interface.js";
 import { IUser } from "../interfaces/user.interface.js";

@@ -1,7 +1,9 @@
 import joi from "joi";
 
-import { regexConstant } from "../constanrs/regex.constant.js";
+import { regexConstant } from "../constants/regex.constant.js";
+import { OrderEnum } from "../enums/order.enum.js";
 import { RoleEnum } from "../enums/role.enum.js";
+import { UserListOrderByEnum } from "../enums/user.lisr.order.by.enum.js";
 
 export class userValidator {
   // Основні схеми
@@ -64,5 +66,19 @@ export class userValidator {
   public static changePassword = joi.object({
     oldPassword: this.passwordSchema,
     newPassword: this.passwordSchema,
+  });
+
+  public static listQuery = joi.object({
+    page: joi.number().min(1).default(1),
+    limit: joi.number().min(1).max(100).default(10),
+    search: joi.string().min(1),
+    order: joi
+      .string()
+      .valid(...Object.values(OrderEnum))
+      .default(OrderEnum.ASC),
+    orderBy: joi
+      .string()
+      .valid(...Object.values(UserListOrderByEnum))
+      .default(UserListOrderByEnum.NAME),
   });
 }

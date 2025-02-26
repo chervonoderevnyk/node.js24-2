@@ -7,7 +7,12 @@ import { userValidator } from "../validators/user.validator.js";
 
 const router = Router();
 
-router.get("/", userController.getList);
+router.get(
+  "/",
+  commonMiddleware.isQueryValid(userValidator.listQuery),
+  userController.getList,
+);
+
 router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
 
 router.get(

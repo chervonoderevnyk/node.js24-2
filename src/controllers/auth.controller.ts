@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { ApiError } from "../errors/appi-error.js";
+import { ApiError } from "../errors/api-error.js";
 import {
   IForgotResetPassword,
   IForgotSetEmail,

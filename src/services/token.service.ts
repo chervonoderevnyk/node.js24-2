@@ -1,7 +1,7 @@
 import jsonwebtoken from "jsonwebtoken";
 
 import { configs } from "../configs/configs.js";
-import { ApiError } from "../errors/appi-error.js";
+import { ApiError } from "../errors/api-error.js";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface.js";
 
 class TokenService {

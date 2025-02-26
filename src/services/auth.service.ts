@@ -1,6 +1,6 @@
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum.js";
 import { EmailTypeEnum } from "../enums/email-type.enum.js";
-import { ApiError } from "../errors/appi-error.js";
+import { ApiError } from "../errors/api-error.js";
 import {
   IActivateToken,
   IForgotResetPassword,
